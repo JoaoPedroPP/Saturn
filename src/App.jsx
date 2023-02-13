@@ -3,21 +3,17 @@ import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [state, setState] = useState("Start");
   const [marca, setMarca] = useState("Marcar");
 
   const mark = async () => {
-    setMarca("Marcado!");
+    const date = new Date();
+    setMarca(await invoke("mark", { state: state, time: date.toISOString() }));
+    setState(state === "Start" ? "End" : "Start");
     setTimeout(() => {
       setMarca("Marcar");
     }, 1500);
   };
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
 
   return (
     <div className="container">
