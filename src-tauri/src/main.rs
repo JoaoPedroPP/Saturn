@@ -1,3 +1,11 @@
+use std::path::Path;
+use dirs::home_dir;
+use std::io::Write;
+use std::fs::{
+    read_dir,
+    OpenOptions,
+    create_dir_all
+};
 use tauri::{
     Manager,
     CustomMenuItem,
@@ -20,6 +28,33 @@ fn greet(name: &str) -> String {
 }
 
 fn main() {
+    let home: String = home_dir().unwrap().to_str().unwrap().to_string();
+    let path = format!("{}/.ponto", home);
+    let folder = Path::new(&path);
+    let record = match read_dir(folder) {
+        Ok(mut x) => {
+            println!("existe dir. Files: {:?}", x);
+            match x.find(|file| file.as_ref().unwrap().file_name() == "ponto.csv") {
+                Some(f) => {
+                    OpenOptions::new().read(true).append(true).open(f.unwrap().path())
+                },
+                None => {
+                    let file_path = format!("{}/.ponto/ponto.csv", home);
+                    let mark = OpenOptions::new().create(true).read(true).write(true).append(true).open(file_path);
+                    let _ = mark.as_ref().expect("Não criou/abriu o arquivo.").write(b"State,Time\n");
+                    mark
+                }
+            }
+        },
+        Err(_) => {
+            let _createdir = create_dir_all(folder).unwrap();
+            let file_path = format!("{}/.ponto/ponto.csv", home);
+            let mark = OpenOptions::new().create(true).read(true).write(true).append(true).open(file_path);
+            let _ = mark.as_ref().expect("Não criou/abriu o arquivo.").write(b"State,Time\n");
+            mark
+        }
+    };
+    record.expect("ihhh").write(b"start,1\n");
     // here `"quit".to_string()` defines the menu item id, and the second parameter is the menu item label.
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
     let hide = CustomMenuItem::new("hide".to_string(), "Hide");
