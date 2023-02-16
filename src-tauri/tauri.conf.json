@@ -22,16 +22,12 @@
         "all": false,
         "open": true
       },
-      "window": {
-        "all": false,
-        "close": false,
-        "hide": true,
-        "show": true,
-        "maximize": false,
-        "minimize": false,
-        "unmaximize": true,
-        "unminimize": true,
-        "startDragging": true
+      "fs": {
+        "scope": ["$HOME/.ponto/*"],
+        "copyFile": true
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
