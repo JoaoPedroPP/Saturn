@@ -12,7 +12,7 @@
   },
   "tauri": {
     "systemTray": {
-      "iconPath": "icons/saturn.png",
+      "iconPath": "icons/32x32.png",
       "iconAsTemplate": true,
       "menuOnLeftClick": false
     },
@@ -39,10 +39,10 @@
       },
       "externalBin": [],
       "icon": [
+        "icons/96x96.png",
+        "icons/48x48.png",
+        "icons/16x16.png",
         "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
         "icons/icon.ico"
       ],
       "identifier": "com.tauri.dev",
@@ -74,7 +74,7 @@
         "fullscreen": false,
         "height": 200,
         "resizable": true,
-        "title": "ponto",
+        "title": "Saturn",
         "width": 200
       }
     ]
