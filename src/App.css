@@ -1,0 +1,14 @@
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 6px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
