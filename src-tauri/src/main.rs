@@ -88,6 +88,22 @@ fn mark(state: &str, time: &str) -> String {
     format!("Marcado!")
 }
 
+#[tauri::command]
+fn open_file_path(path: &str) -> bool {
+    let curr_path = std::path::Path::new(path);
+    let arg = curr_path;
+  
+    if cfg!(target_os = "macos") {
+        std::process::Command::new("open")
+        .args([arg])
+        .output()
+        .expect("failed to execute process");
+        true
+    } else {
+        false
+    }
+  }
+
 fn main() {
     let home: String = home_dir().unwrap().to_str().unwrap().to_string();
     let path = format!("{}/.ponto", home);
@@ -121,7 +137,7 @@ fn main() {
         .add_item(hide);
     let tray = SystemTray::new().with_menu(tray_menu);
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![mark])
+        .invoke_handler(tauri::generate_handler![mark, open_file_path])
         .system_tray(tray)
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::LeftClick {
